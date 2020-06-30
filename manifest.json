@@ -1,6 +1,11 @@
   {
     "name": "scamcheck",
-    "version": "0.0.1",
+    "version": "0.0.0.02",
     "description": "This Extension can detect scams",
-    "manifest_version": 2
+    "manifest_version": 2,
+    "permissions": ["storage", "<all_urls>", "tabs"],
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    }
   }
