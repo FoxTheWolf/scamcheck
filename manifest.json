@@ -1,0 +1,6 @@
+  {
+    "name": "scamcheck",
+    "version": "0.0.1",
+    "description": "This Extension can detect scams",
+    "manifest_version": 2
+  }
