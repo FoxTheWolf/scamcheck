@@ -35,7 +35,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         }
       };
 
-      const safeBrowsing = "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=AIzaSyBJ0hstpWW4kq4torS5SFnxsNhTXZY1wEs" // The safe browsing url and the api key
+      const safeBrowsing = "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=" // The safe browsing url and the api key
       const safeBrowsingParams = { // Essential parameters sent with the request
         headers: {
           "content-type": "application/json; charset=UTF-8"
