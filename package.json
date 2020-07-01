@@ -1,0 +1,26 @@
+{
+  "name": "scamcheck",
+  "version": "0.0.2",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FoxTheWolf/scamcheck.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FoxTheWolf/scamcheck/issues"
+  },
+  "homepage": "https://github.com/FoxTheWolf/scamcheck#readme",
+  "dependencies": {
+    "libphonenumber-js": "^1.7.54"
+  },
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  }
+}
