@@ -18,7 +18,7 @@ function safeBrowsing(url) {
     }
   };
 
-  const safeBrowsing = "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=" // The safe browsing url and the api key
+  const safeBrowsing = "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=AIzaSyDL7X04C3fWDLf2De5h_VVD-RlOvChKNRA" // The safe browsing url and the api key
   const safeBrowsingParams = { // Essential parameters sent with the request
     headers: {
       "content-type": "application/json; charset=UTF-8"
@@ -61,7 +61,7 @@ function rapidApiSpamCaller(number){
   	"method": "GET",
   	"headers": {
   		"x-rapidapi-host": "spamcheck.p.rapidapi.com",
-  		"x-rapidapi-key": ""
+  		"x-rapidapi-key": "316da80dddmshda7077af3148de5p1d7130jsn9d5d855cb788"
   	}
   })
   .then(response => {
