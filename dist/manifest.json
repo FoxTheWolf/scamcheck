@@ -3,13 +3,24 @@
     "version": "0.0.0.02",
     "description": "This Extension can detect scams",
     "manifest_version": 2,
-    "permissions": ["storage", "<all_urls>", "tabs"],
+    "permissions": ["storage", "<all_urls>", "tabs", "declarativeContent"],
     "background": {
-      "persistent": false,
-      "page": "background.html"
+      "scripts": ["scamcheck.js"],
+      "persistent": true
     },
-
     "browser_action": {
-      "default_popup": "popup.html"
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "images/icon.svg",
+        "32": "images/icon.svg",
+        "48": "images/icon.svg",
+        "128": "images/icon.svg"
+      }
+    },
+    "icons": {
+      "16": "images/icon.svg",
+      "32": "images/icon.svg",
+      "48": "images/icon.svg",
+      "128": "images/icon.svg"
     }
   }
