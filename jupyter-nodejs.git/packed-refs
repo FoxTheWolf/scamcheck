@@ -1,0 +1,36 @@
+# pack-refs with: peeled fully-peeled sorted 
+ba43ca21a0e8e380568f4233434430718f43b3e6 refs/heads/dependabot/npm_and_yarn/stringstream-0.0.6
+1388e1957792ef167ccfc7a9cf6c64c3950ded76 refs/heads/master
+49d3ecb6a76fca67ec7c7bb7a17d61342aa424b4 refs/pull/1/head
+b0d7c7b83db9ab3463b319e116de18d777591796 refs/pull/10/head
+d6fd50d5dc7565ad277a62e4f09547f29bebe473 refs/pull/13/head
+6d7a76f8e0a7da079a3333083e703eb98da7aacd refs/pull/16/head
+7fea60c9d38c1d211df473ab6b507204d47fb00e refs/pull/22/head
+5191085384b29f9d9ae7b46326d5207700159b6d refs/pull/24/head
+9fa45b44f0088aa4ec8fd649005ae4b4667dd5c4 refs/pull/27/head
+ba58788ac072a6aa7d2fa569332ed29fb3267454 refs/pull/28/head
+e55d77fc1519970505c8545ffac0fad99766172b refs/pull/29/head
+3b23ff0d6028d76daefe35a03e3c3a2a612c9dd7 refs/pull/33/head
+d5c753cda8cba2debd23f0d254f0a7a6ee2c7de5 refs/pull/36/head
+4d49a6914f158d64d79f8f3d4f074e9c56e622ff refs/pull/49/head
+e7a7752e80012b2984acf9dc66b01b87e90bb28a refs/pull/54/head
+342adf7125b435264f8650c2f16f115644e8717e refs/pull/54/merge
+7c8d4ec376fb3cd8787482335f56ad085542654e refs/pull/57/head
+7c401118581e08eb8b7ee8240f065c24cdbe474a refs/pull/57/merge
+14018e1ff09b769ec0d88adbe858bd4d5c08bc11 refs/pull/58/head
+ed0cdb76c526a442a06c98a3636431b9442ae194 refs/pull/58/merge
+2d8a17fbc94c22d9b11d5f17576386bf06cb138d refs/pull/6/head
+f86c1d29259df0dd118b7a00855c1f8456285b1a refs/pull/63/head
+7d634aec8c70a611dfd901d176f8abdee19884b6 refs/pull/63/merge
+efafa7c16439c3d023e06f7c7b21ea6dbc6128b6 refs/pull/65/head
+13cd05e7d41d059787be5e491261845d7753f7f5 refs/pull/65/merge
+228574754b6a07640779ed01938e62966c94b42f refs/pull/66/head
+89f9dc7aa98758c519bc7e2ff9fccc2e615f77b0 refs/pull/66/merge
+ba43ca21a0e8e380568f4233434430718f43b3e6 refs/pull/67/head
+737e81e7ee2e8eeeaaa3377a099eb8e9a725d1f4 refs/pull/67/merge
+aaca7fa84a842c9ecf664c8b1cdccee529f06c11 refs/pull/7/head
+bb24b8c25d7018283480192843910fb566b3131f refs/pull/70/head
+961ab2941dbaccf8f0e0d8e7b6b8bef21b896938 refs/pull/70/merge
+ebc892ab0144495af1fbe2e8447e1b60dedfc629 refs/tags/v1.0.1
+f38cafcda26abec8af455b8e69fe00e8da9ee710 refs/tags/v1.1.0
+^6920dc0bb33eb10e14b0c6952da2d1f2637d6811
