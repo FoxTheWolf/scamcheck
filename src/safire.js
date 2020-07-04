@@ -116,10 +116,9 @@ browser.storage.onChanged.addListener(function() {
 
 // This script runs every time a tab loads an url
 browser.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
-  if (changeInfo.status == 'complete' && tab.active) {
+  if (changeInfo.status == 'loading') {
     browser.tabs.query({
-      active: true,
-      lastFocusedWindow: true
+      status: 'loading'
     }).then(async tabs => {
       let url = tabs[0].url; // We add the url being loaded to the url variable
       let source = await getSource(tabs[0].id);
