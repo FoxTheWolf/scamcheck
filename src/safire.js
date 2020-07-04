@@ -12,7 +12,7 @@ async function getSource(tabId) {
   return new Promise((resolve, reject) => {
     browser.tabs.executeScript(tabId, {
       code: "document.documentElement.innerHTML"
-    }, function(result) {
+    }).then(function(result) {
       if (browser.runtime.lastError) {
         reject(browser.runtime.lastError.message);
       } else {
@@ -56,11 +56,11 @@ function safeBrowsing(url) {
       if (data.matches) { // If the api returns an undefined object, the website is safe. If not, it has a match
         alert("This website may contain a scam. Tread carefully!"); // TODO: improve the warning message
       } else {
-        console.log("URL not found on Safe Browsing API")
+        console.log("Async - URL not found on Safe Browsing API")
       }
     })
     .catch(
-      err => console.log(err)
+      err => console.log("This url could not be consulted with SafeBrowsing API")
     )
 };
 
@@ -87,20 +87,27 @@ async function analyzePhoneNumbers(source) {
   console.log("Finding and analyzing phone numbers...");
   let phoneList = source.toString();
   for (const number of searchPhoneNumbersInText(phoneList, 'US')) {
-    console.log("Found phone number!: " + number.number.number);
+    console.log("Async - Found phone number!: " + number.number.number);
     rapidApiSpamCaller(number.number.number);
     await new Promise(resolve => setTimeout(resolve, 0));
   }
-  console.log('Finished');
+  console.log('Async - Phone number search process finished');
 };
 
 // Logs that the extension has been loaded
 browser.runtime.onInstalled.addListener(function() {
-  browser.storage.sync.set({
-    color: '#3aa757'
-  }, function() {
-    console.log("Scamcheck is running");
-  });
+  console.log("Scamcheck is running");
+});
+
+browser.declarativeContent.onPageChanged.removeRules(undefined, function() {
+  browser.declarativeContent.onPageChanged.addRules([{
+    conditions: [new browser.declarativeContent.PageStateMatcher({
+      pageUrl: {
+        schemes: ['http', 'https']
+      },
+    })],
+    actions: [new browser.declarativeContent.ShowPageAction()]
+  }]);
 });
 
 browser.storage.onChanged.addListener(function() {
@@ -113,12 +120,12 @@ browser.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
     browser.tabs.query({
       active: true,
       lastFocusedWindow: true
-    }, async function(tabs) {
+    }).then(async tabs => {
       let url = tabs[0].url; // We add the url being loaded to the url variable
       let source = await getSource(tabs[0].id);
       console.log("Received url: " + url)
       safeBrowsing(url);
       analyzePhoneNumbers(source);
-    });
-  };
+    })
+  }
 });
