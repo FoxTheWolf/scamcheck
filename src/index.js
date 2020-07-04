@@ -1,6 +1,27 @@
+//
+//
+//
+
+var browser = require("webextension-polyfill/dist/browser-polyfill.min");
+
 import {
   searchPhoneNumbersInText
 } from 'libphonenumber-js'
+
+async function getSource(tabId) {
+  return new Promise((resolve, reject) => {
+    browser.tabs.executeScript(tabId, {
+      code: "document.documentElement.innerHTML"
+    }, function(result) {
+      if (browser.runtime.lastError) {
+        reject(browser.runtime.lastError.message);
+      } else {
+        resolve(result);
+      }
+    });
+  })
+};
+
 
 function safeBrowsing(url) {
   const form = { // This is a basic form that is sent to the safe browsing api
@@ -43,36 +64,24 @@ function safeBrowsing(url) {
     )
 };
 
-async function getSource(tabId) {
-  return new Promise((resolve, reject) => {
-    chrome.tabs.executeScript(tabId, {
-      code: "document.documentElement.innerHTML"
-    }, function(result) {
-      if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError.message);
-      } else {
-        resolve(result);
+
+function rapidApiSpamCaller(number) {
+  fetch("https://spamcheck.p.rapidapi.com/index.php?number=" + number, {
+      "method": "GET",
+      "headers": {
+        "x-rapidapi-host": "spamcheck.p.rapidapi.com",
+        "x-rapidapi-key": "316da80dddmshda7077af3148de5p1d7130jsn9d5d855cb788"
       }
+    })
+    .then(response => {
+      return response.json()
+    })
+    .then(data => {
+      console.log("Number " + number + ": " + data.response)
+    })
+    .catch(err => {
+      console.log(err)
     });
-  })
-};
-function rapidApiSpamCaller(number){
-  fetch("https://spamcheck.p.rapidapi.com/index.php?number="+number, {
-  	"method": "GET",
-  	"headers": {
-  		"x-rapidapi-host": "spamcheck.p.rapidapi.com",
-  		"x-rapidapi-key": "316da80dddmshda7077af3148de5p1d7130jsn9d5d855cb788"
-  	}
-  })
-  .then(response => {
-  	return response.json()
-  })
-  .then(data => {
-    console.log("Number " + number + ": " + data.response)
-  })
-  .catch(err => {
-  	console.log(err)
-  });
 }
 async function analyzePhoneNumbers(source) {
   console.log("Finding and analyzing phone numbers...");
@@ -86,27 +95,28 @@ async function analyzePhoneNumbers(source) {
 };
 
 // Logs that the extension has been loaded
-chrome.runtime.onInstalled.addListener(function() {
-  chrome.storage.sync.set({
+browser.runtime.onInstalled.addListener(function() {
+  browser.storage.sync.set({
     color: '#3aa757'
   }, function() {
-    console.log("scamcheck is running");
+    console.log("Scamcheck is running");
   });
 });
 
-chrome.storage.onChanged.addListener(function() {
-  chrome.storage.sync.get(debug)
+browser.storage.onChanged.addListener(function() {
+  browser.storage.sync.get(debug)
 });
 
 // This script runs every time a tab loads an url
-chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
+browser.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
   if (changeInfo.status == 'complete' && tab.active) {
-    chrome.tabs.query({
+    browser.tabs.query({
       active: true,
       lastFocusedWindow: true
     }, async function(tabs) {
       let url = tabs[0].url; // We add the url being loaded to the url variable
       let source = await getSource(tabs[0].id);
+      console.log("Received url: " + url)
       safeBrowsing(url);
       analyzePhoneNumbers(source);
     });
