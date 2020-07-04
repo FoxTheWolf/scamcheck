@@ -1,6 +1,6 @@
   {
     "name": "Safire",
-    "version": "0.0.0.02",
+    "version": "0.0.1.0",
     "description": "This Extension can detect scams",
     "permissions": ["storage", "<all_urls>", "tabs", "declarativeContent"],
     "background": {
