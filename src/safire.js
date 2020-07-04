@@ -3,6 +3,9 @@
 //
 
 var browser = require("webextension-polyfill/dist/browser-polyfill.min");
+var phoneSafe;
+var urlSafe;
+
 
 import {
   searchPhoneNumbersInText
@@ -22,6 +25,44 @@ async function getSource(tabId) {
   })
 };
 
+function badgeStatus(string) {
+  switch (string) {
+    case 'scan':
+      browser.browserAction.setBadgeText({
+        text: "SCAN"
+      });
+      browser.browserAction.setBadgeBackgroundColor({
+        color: "blue"
+      });
+      break;
+    case 'safe':
+      browser.browserAction.setBadgeText({
+        text: "SAFE"
+      });
+      browser.browserAction.setBadgeBackgroundColor({
+        color: "green"
+      });
+      break;
+    case "warn":
+      browser.browserAction.setBadgeText({
+        text: "WARN"
+      });
+      browser.browserAction.setBadgeBackgroundColor({
+        color: "yellow"
+      });
+      break;
+    case "stop":
+      browser.browserAction.setBadgeText({
+        text: "STOP"
+      });
+      browser.browserAction.setBadgeBackgroundColor({
+        color: "red"
+      });
+      break;
+    default:
+      console.error("badgeStatus function received invalid status: " + string);
+  }
+};
 
 function safeBrowsing(url) {
   const form = { // This is a basic form that is sent to the safe browsing api
@@ -55,16 +96,17 @@ function safeBrowsing(url) {
     .then(data => {
       if (data.matches) { // If the api returns an undefined object, the website is safe. If not, it has a match
         alert("This website may contain a scam. Tread carefully!"); // TODO: improve the warning message
+        badgeStatus('stop');
       } else {
         console.log("Async - URL not found on Safe Browsing API")
+        urlSafe = true;
+        progressBadge(urlSafe, phoneSafe);
       }
     })
     .catch(
       err => console.log("This url could not be consulted with SafeBrowsing API")
     )
 };
-
-
 function rapidApiSpamCaller(number) {
   fetch("https://spamcheck.p.rapidapi.com/index.php?number=" + number, {
       "method": "GET",
@@ -87,11 +129,12 @@ async function analyzePhoneNumbers(source) {
   console.log("Finding and analyzing phone numbers...");
   let phoneList = source.toString();
   for (const number of searchPhoneNumbersInText(phoneList, 'US')) {
-    console.log("Async - Found phone number!: " + number.number.number);
     rapidApiSpamCaller(number.number.number);
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise(resolve => setTimeout(resolve, 500));
   }
   console.log('Async - Phone number search process finished');
+  phoneSafe = true;
+  progressBadge(urlSafe, phoneSafe);
 };
 
 // Logs that the extension has been loaded
@@ -114,15 +157,25 @@ browser.storage.onChanged.addListener(function() {
   browser.storage.sync.get(debug)
 });
 
+function progressBadge(urlSafe, phoneSafe){
+  if (phoneSafe && urlSafe) {
+    badgeStatus('safe')
+  }
+  return;
+};
+
 // This script runs every time a tab loads an url
 browser.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
   if (changeInfo.status == 'loading') {
     browser.tabs.query({
       status: 'loading'
     }).then(async tabs => {
+      phoneSafe = false;
+      urlSafe = false;
       let url = tabs[0].url; // We add the url being loaded to the url variable
       let source = await getSource(tabs[0].id);
-      console.log("Received url: " + url)
+      badgeStatus('scan');
+      console.log("Received url: " + url);
       safeBrowsing(url);
       analyzePhoneNumbers(source);
     })
