@@ -1,10 +1,17 @@
-let changeColor = document.getElementById('changeColor');
-  ...
-  changeColor.onclick = function(element) {
-    let color = element.target.value;
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      chrome.tabs.executeScript(
-          tabs[0].id,
-          {code: 'document.body.style.backgroundColor = "' + color + '";'});
-    });
-  };
+  // This script runs every time a tab loads an url
+  browser.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
+    if (changeInfo.status == 'loading') {
+      browser.tabs.query({
+        status: 'loading'
+      }).then(async tabs => {
+        phoneSafe = false;
+        urlSafe = false;
+        browser.runtime.sendMessage({
+          start: true,
+          tab: tabs[0]
+        }, function(response) {
+          console.log(response.status);
+        })
+      })
+    }
+  });
